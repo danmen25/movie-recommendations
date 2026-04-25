@@ -70,12 +70,12 @@ nav { display: flex; gap: 0.2rem; }
 .nav-btn:hover { color: var(--text); background: var(--bg-elevated); }
 .nav-btn.active { color: var(--amber); background: var(--amber-dim); }
 
-.key-btn {
+.settings-btn {
   background: none; border: 1px solid var(--border); color: var(--text-muted);
   padding: 0.38rem 0.75rem; border-radius: var(--r); cursor: pointer;
   font-size: 0.78rem; font-family: inherit; transition: all var(--ease); white-space: nowrap;
 }
-.key-btn:hover { border-color: var(--amber); color: var(--amber); }
+.settings-btn:hover { border-color: var(--amber); color: var(--amber); }
 
 /* ── Main ── */
 main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
@@ -86,60 +86,44 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
 .section-header p { color: var(--text-muted); font-size: 0.9rem; }
 
 /* ── Add form ── */
-.add-row {
-  display: flex;
-  gap: 0.65rem;
-  margin-bottom: 2rem;
-}
+.add-row { display: flex; gap: 0.65rem; margin-bottom: 2rem; }
 .add-row input {
-  flex: 1;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  color: var(--text);
-  font-size: 0.95rem;
-  padding: 0.7rem 1rem;
-  outline: none;
-  transition: border-color var(--ease);
-  font-family: inherit;
+  flex: 1; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r); color: var(--text); font-size: 0.95rem;
+  padding: 0.7rem 1rem; outline: none; transition: border-color var(--ease); font-family: inherit;
 }
 .add-row input:focus { border-color: var(--amber); }
 .add-row input::placeholder { color: var(--text-dim); }
 
 /* ── Library list ── */
-.lib-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  gap: 1rem;
-}
+.lib-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 1rem; }
 .lib-count { font-size: 0.85rem; color: var(--text-muted); }
 .lib-count strong { color: var(--text); }
 
-.film-list { display: flex; flex-direction: column; gap: 0px; }
+.film-list { display: flex; flex-direction: column; }
 .film-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--border);
-  gap: 1rem;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 0; border-bottom: 1px solid var(--border); gap: 1rem;
 }
 .film-row:first-child { border-top: 1px solid var(--border); }
 .film-name { font-size: 0.95rem; font-weight: 500; }
-.film-row .del-btn {
+.del-btn {
   background: none; border: none; color: var(--text-dim); cursor: pointer;
   font-size: 1rem; padding: 0.2rem 0.4rem; border-radius: 4px;
   transition: color var(--ease), background var(--ease); flex-shrink: 0; font-family: inherit; line-height: 1;
 }
-.film-row .del-btn:hover { color: var(--danger); background: var(--danger-dim); }
+.del-btn:hover { color: var(--danger); background: var(--danger-dim); }
 
-/* ── Empty state ── */
+/* ── Empty / notice states ── */
 .empty { text-align: center; padding: 4rem 2rem; color: var(--text-muted); }
 .empty-icon { font-size: 2.8rem; margin-bottom: 1rem; opacity: 0.35; }
 .empty h3 { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.45rem; }
 .empty p { font-size: 0.875rem; max-width: 360px; margin: 0 auto; line-height: 1.6; }
+.notice {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 1.2rem 1.5rem; font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;
+}
+.notice strong { color: var(--amber); }
 
 /* ── Buttons ── */
 .btn { border: none; border-radius: var(--r); cursor: pointer; font-size: 0.875rem; font-weight: 600; font-family: inherit; padding: 0.65rem 1.2rem; transition: all var(--ease); }
@@ -156,7 +140,6 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
 /* ── Recommendations ── */
 .recs-bar { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
 .recs-hint { font-size: 0.85rem; color: var(--text-muted); }
-
 .rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
 .rec-card {
   background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-xl);
@@ -175,7 +158,11 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
 /* ── Mood ── */
 .mood-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 1.85rem; margin-bottom: 2rem; }
 .mood-row { display: flex; gap: 0.75rem; align-items: center; }
-.mood-input { flex: 1; font-size: 1rem; padding: 0.8rem 1rem; border-radius: var(--r-lg); background: var(--bg-input); border: 1px solid var(--border); color: var(--text); outline: none; font-family: inherit; transition: border-color var(--ease); }
+.mood-input {
+  flex: 1; font-size: 1rem; padding: 0.8rem 1rem; border-radius: var(--r-lg);
+  background: var(--bg-input); border: 1px solid var(--border); color: var(--text);
+  outline: none; font-family: inherit; transition: border-color var(--ease);
+}
 .mood-input:focus { border-color: var(--amber); }
 .mood-input::placeholder { color: var(--text-dim); }
 .mood-examples { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 1rem; align-items: center; }
@@ -191,10 +178,23 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
 
 /* ── Modals ── */
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-.modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 2rem; width: 100%; max-width: 440px; }
-.modal h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.45rem; }
-.modal-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.4rem; line-height: 1.6; }
-.modal-actions { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 1rem; }
+.modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 2rem; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+.modal h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; }
+.modal-section { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.modal-section:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.modal-section-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 0.35rem; }
+.modal-section-desc { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5; }
+.field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.85rem; }
+.field:last-child { margin-bottom: 0; }
+.field label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); }
+.field input {
+  background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--r);
+  color: var(--text); font-size: 0.875rem; padding: 0.6rem 0.85rem; outline: none;
+  transition: border-color var(--ease); font-family: inherit; width: 100%;
+}
+.field input:focus { border-color: var(--amber); }
+.field input::placeholder { color: var(--text-dim); }
+.modal-actions { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 1.5rem; }
 
 /* ── Toast ── */
 .toasts { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 2000; display: flex; flex-direction: column; gap: 0.45rem; }
@@ -218,18 +218,36 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
 </head>
 <body>
 
-<!-- API Key Modal -->
-<div class="overlay" id="keyModal" style="display:none">
+<!-- Settings Modal -->
+<div class="overlay" id="settingsModal" style="display:none">
   <div class="modal">
-    <h2>Welcome to My Film Shelf</h2>
-    <p class="modal-desc">Enter your Claude API key to enable AI-powered recommendations. Stored only in your browser, sent only to the Anthropic API.</p>
-    <div style="margin-bottom:1.25rem">
-      <label style="font-size:0.8rem;font-weight:500;color:var(--text-muted);display:block;margin-bottom:0.4rem">Claude API Key</label>
-      <input type="text" id="keyInput" placeholder="sk-ant-..." autocomplete="off" spellcheck="false" style="width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:0.9rem;padding:0.65rem 0.85rem;outline:none;font-family:inherit">
+    <h2>Settings</h2>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Claude API</div>
+      <div class="modal-section-desc">Used for AI-powered recommendations.</div>
+      <div class="field">
+        <label>API Key</label>
+        <input type="text" id="claudeKeyInput" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+      </div>
     </div>
-    <div class="modal-actions" style="margin-top:0">
-      <button class="btn btn-secondary" id="skipKey">Skip for now</button>
-      <button class="btn btn-primary" id="saveKey">Save Key</button>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Supabase</div>
+      <div class="modal-section-desc">Cloud storage so your library syncs across devices. <a href="https://supabase.com" target="_blank" style="color:var(--amber);text-decoration:none">supabase.com</a> → Project Settings → API.</div>
+      <div class="field">
+        <label>Project URL</label>
+        <input type="text" id="sbUrlInput" placeholder="https://xxxxxxxxxxxx.supabase.co" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label>Anon / Public Key</label>
+        <input type="text" id="sbKeyInput" placeholder="eyJ…" autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="settingsCancel">Cancel</button>
+      <button class="btn btn-primary" id="settingsSave">Save</button>
     </div>
   </div>
 </div>
@@ -238,8 +256,8 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
 <div class="overlay" id="importModal" style="display:none">
   <div class="modal" style="max-width:560px">
     <h2>Import Movies</h2>
-    <p class="modal-desc">Paste movie titles separated by commas.</p>
-    <textarea id="importText" style="width:100%;min-height:120px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:0.9rem;padding:0.75rem;outline:none;font-family:inherit;resize:vertical;line-height:1.6" placeholder="A Separation, Joji, No Country for Old Men, In Bruges, Memento, There Will Be Blood"></textarea>
+    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.6">Paste movie titles separated by commas.</p>
+    <textarea id="importText" style="width:100%;min-height:120px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:0.9rem;padding:0.75rem;outline:none;font-family:inherit;resize:vertical;line-height:1.6;transition:border-color var(--ease)" placeholder="A Separation, Joji, No Country for Old Men, In Bruges, Memento, There Will Be Blood"></textarea>
     <div id="importError" style="display:none;margin-top:0.75rem"></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" id="importCancel">Cancel</button>
@@ -257,7 +275,7 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
       <button class="nav-btn" data-tab="recommendations">Recommendations</button>
       <button class="nav-btn" data-tab="mood">Discover</button>
     </nav>
-    <button class="key-btn" id="changeKey">API Key</button>
+    <button class="settings-btn" id="openSettings">⚙ Settings</button>
   </div>
 </header>
 
@@ -280,7 +298,7 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
       <button class="btn btn-ghost" id="importBtn">↑ Import</button>
     </div>
 
-    <div class="film-list" id="filmList"></div>
+    <div id="filmList"></div>
   </div>
 
   <!-- Recommendations -->
@@ -324,43 +342,252 @@ main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
 <div class="toasts" id="toasts"></div>
 
 <script>
-// ── State ──
-const LIB_KEY = 'filmshelf_lib';
-const KEY_KEY = 'filmshelf_apikey';
+// ── Config (all stored in localStorage — per-device is fine for credentials) ──
+const LS_CLAUDE = 'filmshelf_apikey';
+const LS_SB_URL = 'filmshelf_sb_url';
+const LS_SB_KEY = 'filmshelf_sb_key';
 
-let library = JSON.parse(localStorage.getItem(LIB_KEY) || '[]');
-let apiKey  = localStorage.getItem(KEY_KEY) || '';
+let claudeKey = localStorage.getItem(LS_CLAUDE) || '';
+let sbUrl      = (localStorage.getItem(LS_SB_URL) || '').replace(/\/$/, '');
+let sbKey      = localStorage.getItem(LS_SB_KEY) || '';
+
+// In-memory library (source of truth is Supabase)
+let library = [];
 
 // ── Utilities ──
-const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
-const esc  = s => { const d = document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; };
-const save = () => localStorage.setItem(LIB_KEY, JSON.stringify(library));
+const esc = s => { const d = document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; };
 
 function toast(msg, type = '') {
   const el = document.createElement('div');
   el.className = `toast ${type}`;
   el.textContent = msg;
   document.getElementById('toasts').appendChild(el);
-  setTimeout(() => el.remove(), 3000);
+  setTimeout(() => el.remove(), 3500);
 }
 
-// ── API Key ──
-const keyModal = document.getElementById('keyModal');
-const showKeyModal = show => keyModal.style.display = show ? 'flex' : 'none';
+function showLoading(el, msg = 'Loading…') {
+  el.innerHTML = `<div class="loading"><div class="spinner"></div><span>${msg}</span></div>`;
+}
 
-document.getElementById('saveKey').addEventListener('click', () => {
-  const v = document.getElementById('keyInput').value.trim();
-  if (!v) { toast('Please enter an API key', 'err'); return; }
-  apiKey = v;
-  localStorage.setItem(KEY_KEY, apiKey);
-  showKeyModal(false);
-  toast('API key saved', 'ok');
-  updateRecsHint();
+// ── Supabase REST helpers ──
+function sbHeaders(extra = {}) {
+  return {
+    'apikey': sbKey,
+    'Authorization': `Bearer ${sbKey}`,
+    'Content-Type': 'application/json',
+    ...extra
+  };
+}
+
+async function sbRequest(method, path, body) {
+  const res = await fetch(`${sbUrl}/rest/v1/${path}`, {
+    method,
+    headers: sbHeaders(method === 'POST' ? { 'Prefer': 'return=representation' } : {}),
+    body: body !== undefined ? JSON.stringify(body) : undefined
+  });
+  if (!res.ok) {
+    const raw = await res.text().catch(() => '');
+    let msg = `Supabase error ${res.status}`;
+    try { const j = JSON.parse(raw); msg = j.message || j.hint || raw || msg; } catch { msg = raw || msg; }
+    throw new Error(msg);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+const sbGet    = ()       => sbRequest('GET',    'movies?select=id,title,added_at&order=added_at.desc');
+const sbInsert = rows     => sbRequest('POST',   'movies', rows);
+const sbDelete = id       => sbRequest('DELETE', `movies?id=eq.${id}`);
+
+// ── Library ──
+function isSupabaseConfigured() {
+  return sbUrl && sbKey;
+}
+
+async function loadLibrary() {
+  const listEl  = document.getElementById('filmList');
+  const countEl = document.getElementById('libCount');
+
+  if (!isSupabaseConfigured()) {
+    countEl.textContent = '';
+    listEl.innerHTML = `<div class="notice">
+      <strong>Connect Supabase to sync your library.</strong><br>
+      Click <strong style="color:var(--text)">⚙ Settings</strong> in the header, paste your Supabase Project URL and anon key, and save.
+      Your movies will then sync across all your devices.
+    </div>`;
+    return;
+  }
+
+  showLoading(listEl, 'Loading your library…');
+  countEl.textContent = '';
+
+  try {
+    const rows = await sbGet();
+    library = rows.map(r => ({ id: r.id, title: r.title, added: r.added_at }));
+    renderLibrary();
+  } catch (err) {
+    listEl.innerHTML = `<div class="error-box">Could not load library: ${esc(err.message)}</div>`;
+    countEl.textContent = '';
+  }
+}
+
+function renderLibrary() {
+  const listEl  = document.getElementById('filmList');
+  const countEl = document.getElementById('libCount');
+
+  countEl.innerHTML = `<strong>${library.length}</strong> film${library.length !== 1 ? 's' : ''}`;
+
+  if (!library.length) {
+    listEl.innerHTML = `<div class="empty">
+      <div class="empty-icon">◈</div>
+      <h3>Your shelf is empty</h3>
+      <p>Add films above or import a comma-separated list.</p>
+    </div>`;
+    return;
+  }
+
+  listEl.innerHTML = `<div class="film-list">${library.map(f => `
+    <div class="film-row">
+      <span class="film-name">${esc(f.title)}</span>
+      <button class="del-btn" data-id="${esc(f.id)}" title="Remove">×</button>
+    </div>`).join('')}</div>`;
+
+  listEl.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', () => deleteFilm(btn.dataset.id, btn.closest('.film-row')));
+  });
+}
+
+async function addFilm(title) {
+  title = title.trim();
+  if (!title) return false;
+
+  if (!isSupabaseConfigured()) {
+    toast('Configure Supabase in Settings first', 'err'); return false;
+  }
+  if (library.some(f => f.title.toLowerCase() === title.toLowerCase())) {
+    toast(`"${title}" is already in your library`, 'err'); return false;
+  }
+
+  try {
+    const [row] = await sbInsert([{ title }]);
+    library.unshift({ id: row.id, title: row.title, added: row.added_at });
+    renderLibrary();
+    return true;
+  } catch (err) {
+    toast('Could not add film: ' + err.message, 'err');
+    return false;
+  }
+}
+
+async function deleteFilm(id, rowEl) {
+  // Optimistic removal
+  rowEl.style.opacity = '0.4';
+  rowEl.style.pointerEvents = 'none';
+  try {
+    await sbDelete(id);
+    library = library.filter(f => f.id !== id);
+    renderLibrary();
+    toast('Film removed');
+  } catch (err) {
+    rowEl.style.opacity = '';
+    rowEl.style.pointerEvents = '';
+    toast('Could not remove film: ' + err.message, 'err');
+  }
+}
+
+// ── Add / keydown ──
+document.getElementById('addFilm').addEventListener('click', async () => {
+  const input = document.getElementById('filmTitle');
+  if (await addFilm(input.value)) input.value = '';
 });
-document.getElementById('skipKey').addEventListener('click', () => showKeyModal(false));
-document.getElementById('changeKey').addEventListener('click', () => {
-  document.getElementById('keyInput').value = apiKey;
-  showKeyModal(true);
+
+document.getElementById('filmTitle').addEventListener('keydown', async e => {
+  if (e.key !== 'Enter') return;
+  if (await addFilm(e.target.value)) e.target.value = '';
+});
+
+// ── Import ──
+document.getElementById('importBtn').addEventListener('click', () => {
+  if (!isSupabaseConfigured()) { toast('Configure Supabase in Settings first', 'err'); return; }
+  document.getElementById('importText').value = '';
+  document.getElementById('importError').style.display = 'none';
+  document.getElementById('importModal').style.display = 'flex';
+  document.getElementById('importText').focus();
+});
+document.getElementById('importCancel').addEventListener('click', () => {
+  document.getElementById('importModal').style.display = 'none';
+});
+document.getElementById('importConfirm').addEventListener('click', async () => {
+  const raw    = document.getElementById('importText').value;
+  const titles = raw.split(',').map(t => t.trim()).filter(Boolean);
+  const errEl  = document.getElementById('importError');
+
+  if (!titles.length) {
+    errEl.className = 'error-box'; errEl.textContent = 'Paste at least one title.'; errEl.style.display = '';
+    return;
+  }
+
+  const newTitles = titles.filter(t => !library.some(f => f.title.toLowerCase() === t.toLowerCase()));
+  const skipped   = titles.length - newTitles.length;
+
+  if (!newTitles.length) {
+    errEl.className = 'error-box';
+    errEl.textContent = `All ${titles.length} title${titles.length !== 1 ? 's' : ''} are already in your library.`;
+    errEl.style.display = '';
+    return;
+  }
+
+  const confirmBtn = document.getElementById('importConfirm');
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = 'Importing…';
+
+  try {
+    const rows = await sbInsert(newTitles.map(title => ({ title })));
+    rows.forEach(r => library.unshift({ id: r.id, title: r.title, added: r.added_at }));
+    renderLibrary();
+    document.getElementById('importModal').style.display = 'none';
+    const msg = skipped
+      ? `Imported ${rows.length} film${rows.length !== 1 ? 's' : ''}. Skipped ${skipped} duplicate${skipped !== 1 ? 's' : ''}.`
+      : `Imported ${rows.length} film${rows.length !== 1 ? 's' : ''}.`;
+    toast(msg, 'ok');
+  } catch (err) {
+    errEl.className = 'error-box'; errEl.textContent = 'Import failed: ' + err.message; errEl.style.display = '';
+  } finally {
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = 'Import';
+  }
+});
+
+// ── Settings ──
+document.getElementById('openSettings').addEventListener('click', () => {
+  document.getElementById('claudeKeyInput').value = claudeKey;
+  document.getElementById('sbUrlInput').value     = sbUrl;
+  document.getElementById('sbKeyInput').value     = sbKey;
+  document.getElementById('settingsModal').style.display = 'flex';
+});
+document.getElementById('settingsCancel').addEventListener('click', () => {
+  document.getElementById('settingsModal').style.display = 'none';
+});
+document.getElementById('settingsSave').addEventListener('click', async () => {
+  const newClaude = document.getElementById('claudeKeyInput').value.trim();
+  const newSbUrl  = document.getElementById('sbUrlInput').value.trim().replace(/\/$/, '');
+  const newSbKey  = document.getElementById('sbKeyInput').value.trim();
+
+  const sbChanged = newSbUrl !== sbUrl || newSbKey !== sbKey;
+
+  claudeKey = newClaude;
+  sbUrl     = newSbUrl;
+  sbKey     = newSbKey;
+
+  localStorage.setItem(LS_CLAUDE, claudeKey);
+  localStorage.setItem(LS_SB_URL, sbUrl);
+  localStorage.setItem(LS_SB_KEY, sbKey);
+
+  document.getElementById('settingsModal').style.display = 'none';
+  toast('Settings saved', 'ok');
+  updateRecsHint();
+
+  if (sbChanged) await loadLibrary();
 });
 
 // ── Navigation ──
@@ -374,100 +601,12 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
   });
 });
 
-// ── Library ──
-function renderLibrary() {
-  const list  = document.getElementById('filmList');
-  const count = document.getElementById('libCount');
-  count.innerHTML = `<strong>${library.length}</strong> film${library.length !== 1 ? 's' : ''}`;
-
-  if (!library.length) {
-    list.innerHTML = `<div class="empty">
-      <div class="empty-icon">◈</div>
-      <h3>Your shelf is empty</h3>
-      <p>Add films above or import a list.</p>
-    </div>`;
-    return;
-  }
-
-  list.innerHTML = library.map(f => `
-    <div class="film-row">
-      <span class="film-name">${esc(f.title)}</span>
-      <button class="del-btn" onclick="deleteFilm('${f.id}')" title="Remove">×</button>
-    </div>`).join('');
-}
-
-function addFilm(title) {
-  title = title.trim();
-  if (!title) return false;
-  if (library.some(f => f.title.toLowerCase() === title.toLowerCase())) {
-    toast(`"${title}" is already in your library`, 'err');
-    return false;
-  }
-  library.unshift({ id: uid(), title, added: Date.now() });
-  save();
-  renderLibrary();
-  return true;
-}
-
-function deleteFilm(id) {
-  library = library.filter(f => f.id !== id);
-  save(); renderLibrary();
-  toast('Film removed');
-}
-
-document.getElementById('addFilm').addEventListener('click', () => {
-  const input = document.getElementById('filmTitle');
-  if (addFilm(input.value)) { input.value = ''; input.focus(); }
-});
-
-document.getElementById('filmTitle').addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    const input = e.target;
-    if (addFilm(input.value)) input.value = '';
-  }
-});
-
-// ── Import ──
-document.getElementById('importBtn').addEventListener('click', () => {
-  document.getElementById('importText').value = '';
-  document.getElementById('importError').style.display = 'none';
-  document.getElementById('importModal').style.display = 'flex';
-  document.getElementById('importText').focus();
-});
-document.getElementById('importCancel').addEventListener('click', () => {
-  document.getElementById('importModal').style.display = 'none';
-});
-document.getElementById('importConfirm').addEventListener('click', () => {
-  const raw = document.getElementById('importText').value;
-  const titles = raw.split(',').map(t => t.trim()).filter(Boolean);
-
-  if (!titles.length) {
-    const err = document.getElementById('importError');
-    err.className = 'error-box'; err.textContent = 'Paste at least one title.'; err.style.display = '';
-    return;
-  }
-
-  let imported = 0, skipped = 0;
-  titles.forEach(title => {
-    if (library.some(f => f.title.toLowerCase() === title.toLowerCase())) { skipped++; return; }
-    library.unshift({ id: uid(), title, added: Date.now() });
-    imported++;
-  });
-
-  save(); renderLibrary();
-  document.getElementById('importModal').style.display = 'none';
-  const msg = skipped
-    ? `Imported ${imported} film${imported !== 1 ? 's' : ''}. Skipped ${skipped} duplicate${skipped !== 1 ? 's' : ''}.`
-    : `Imported ${imported} film${imported !== 1 ? 's' : ''}.`;
-  toast(msg, 'ok');
-});
-
 // ── Claude API ──
 async function callClaude(system, user) {
-  if (!apiKey) {
-    document.getElementById('keyInput').value = '';
-    showKeyModal(true);
-    throw new Error('No API key set. Please enter your Claude API key.');
+  if (!claudeKey) {
+    document.getElementById('claudeKeyInput').value = '';
+    document.getElementById('settingsModal').style.display = 'flex';
+    throw new Error('No Claude API key set. Please enter it in Settings.');
   }
 
   let res;
@@ -476,7 +615,7 @@ async function callClaude(system, user) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
+        'x-api-key': claudeKey,
         'anthropic-version': '2023-06-01',
         'anthropic-dangerous-direct-browser-access': 'true'
       },
@@ -512,10 +651,6 @@ function parseJson(text) {
   return null;
 }
 
-function loading(el) {
-  el.innerHTML = `<div class="loading"><div class="spinner"></div><span>Claude is thinking…</span></div>`;
-}
-
 function renderCards(recs, el) {
   el.innerHTML = `<div class="rec-grid">${recs.map((r, i) => `
     <div class="rec-card">
@@ -526,8 +661,7 @@ function renderCards(recs, el) {
         ${r.imdb_rating ? `<span class="imdb-badge">IMDb ${esc(String(r.imdb_rating))}</span>` : ''}
       </div>
       <div class="rec-reason">${esc(r.reason || '')}</div>
-    </div>`).join('')
-  }</div>`;
+    </div>`).join('')}</div>`;
 }
 
 const SYSTEM_PROMPT = `You are a film recommendation expert with deep knowledge of world cinema.
@@ -549,41 +683,31 @@ function updateRecsHint() {
 
 document.getElementById('getRecsBtn').addEventListener('click', async () => {
   if (!library.length) { toast('Add some films to your library first', 'err'); return; }
-
   const out = document.getElementById('recsOut');
   const btn = document.getElementById('getRecsBtn');
   btn.disabled = true;
-  loading(out);
-
-  const msg = `Here is my list of films:\n\n${libTitles()}\n\nRecommend 5 films I probably haven't seen.`;
-
+  showLoading(out, 'Claude is thinking…');
   try {
-    const text = await callClaude(SYSTEM_PROMPT, msg);
+    const text = await callClaude(SYSTEM_PROMPT, `Here is my list of films:\n\n${libTitles()}\n\nRecommend 5 films I probably haven't seen.`);
     const recs = parseJson(text);
     if (recs?.length) renderCards(recs, out);
     else out.innerHTML = `<div class="error-box">Couldn't parse the response.<br><br><pre style="white-space:pre-wrap;font-size:0.8rem;margin-top:0.5rem">${esc(text)}</pre></div>`;
   } catch (err) {
     out.innerHTML = `<div class="error-box">${esc(err.message)}</div>`;
-  } finally {
-    btn.disabled = false;
-  }
+  } finally { btn.disabled = false; }
 });
 
 // ── Discover by Mood ──
 async function discoverMood() {
   const query = document.getElementById('moodInput').value.trim();
   if (!query) { toast("Describe what you're in the mood for", 'err'); return; }
-
   const out = document.getElementById('moodOut');
   const btn = document.getElementById('moodBtn');
   btn.disabled = true;
-  loading(out);
-
-  const hasLib = library.length > 0;
-  const userMsg = hasLib
+  showLoading(out, 'Claude is thinking…');
+  const userMsg = library.length
     ? `My mood/request: "${query}"\n\nMy film library for context:\n${libTitles()}\n\nRecommend 5 films matching my mood and taste.`
     : `My mood/request: "${query}"\n\nRecommend 5 films that match this mood.`;
-
   try {
     const text = await callClaude(SYSTEM_PROMPT, userMsg);
     const recs = parseJson(text);
@@ -591,9 +715,7 @@ async function discoverMood() {
     else out.innerHTML = `<div class="error-box">Couldn't parse the response.<br><br><pre style="white-space:pre-wrap;font-size:0.8rem;margin-top:0.5rem">${esc(text)}</pre></div>`;
   } catch (err) {
     out.innerHTML = `<div class="error-box">${esc(err.message)}</div>`;
-  } finally {
-    btn.disabled = false;
-  }
+  } finally { btn.disabled = false; }
 }
 
 document.getElementById('moodBtn').addEventListener('click', discoverMood);
@@ -606,11 +728,7 @@ document.querySelectorAll('.mood-pill').forEach(p => {
 });
 
 // ── Init ──
-// Migrate old library entries (drop rating/note/tags if present)
-library = library.map(f => ({ id: f.id || uid(), title: f.title, added: f.added || Date.now() }));
-save();
-
-renderLibrary();
+loadLibrary();
 updateRecsHint();
 </script>
 </body>
