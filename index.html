@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Film Shelf</title>
+<style>
+:root {
+  --bg: #0d0d0d;
+  --bg-card: #181818;
+  --bg-elevated: #1e1e1e;
+  --bg-input: #161616;
+  --bg-hover: #222;
+  --border: #272727;
+  --border-focus: #3d3d3d;
+  --amber: #f59e0b;
+  --amber-hover: #fbbf24;
+  --amber-dim: rgba(245,158,11,0.13);
+  --text: #ede8df;
+  --text-muted: #7a7470;
+  --text-dim: #3f3f3f;
+  --danger: #ef4444;
+  --danger-dim: rgba(239,68,68,0.1);
+  --r: 8px;
+  --r-lg: 13px;
+  --r-xl: 18px;
+  --ease: 0.15s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(14px);
+}
+.header-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+.logo { display: flex; align-items: center; gap: 0.55rem; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.025em; white-space: nowrap; }
+.logo-mark { color: var(--amber); font-size: 1.3rem; }
+.logo span { color: var(--amber); }
+
+nav { display: flex; gap: 0.2rem; }
+.nav-btn {
+  background: none; border: none; color: var(--text-muted);
+  padding: 0.45rem 0.85rem; border-radius: var(--r); cursor: pointer;
+  font-size: 0.875rem; font-weight: 500; transition: color var(--ease), background var(--ease); font-family: inherit;
+}
+.nav-btn:hover { color: var(--text); background: var(--bg-elevated); }
+.nav-btn.active { color: var(--amber); background: var(--amber-dim); }
+
+.key-btn {
+  background: none; border: 1px solid var(--border); color: var(--text-muted);
+  padding: 0.38rem 0.75rem; border-radius: var(--r); cursor: pointer;
+  font-size: 0.78rem; font-family: inherit; transition: all var(--ease); white-space: nowrap;
+}
+.key-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ── Main ── */
+main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.section-header { margin-bottom: 2rem; }
+.section-header h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 0.3rem; }
+.section-header p { color: var(--text-muted); font-size: 0.9rem; }
+
+/* ── Add form ── */
+.add-row {
+  display: flex;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+}
+.add-row input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-size: 0.95rem;
+  padding: 0.7rem 1rem;
+  outline: none;
+  transition: border-color var(--ease);
+  font-family: inherit;
+}
+.add-row input:focus { border-color: var(--amber); }
+.add-row input::placeholder { color: var(--text-dim); }
+
+/* ── Library list ── */
+.lib-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.lib-count { font-size: 0.85rem; color: var(--text-muted); }
+.lib-count strong { color: var(--text); }
+
+.film-list { display: flex; flex-direction: column; gap: 0px; }
+.film-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.film-row:first-child { border-top: 1px solid var(--border); }
+.film-name { font-size: 0.95rem; font-weight: 500; }
+.film-row .del-btn {
+  background: none; border: none; color: var(--text-dim); cursor: pointer;
+  font-size: 1rem; padding: 0.2rem 0.4rem; border-radius: 4px;
+  transition: color var(--ease), background var(--ease); flex-shrink: 0; font-family: inherit; line-height: 1;
+}
+.film-row .del-btn:hover { color: var(--danger); background: var(--danger-dim); }
+
+/* ── Empty state ── */
+.empty { text-align: center; padding: 4rem 2rem; color: var(--text-muted); }
+.empty-icon { font-size: 2.8rem; margin-bottom: 1rem; opacity: 0.35; }
+.empty h3 { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.45rem; }
+.empty p { font-size: 0.875rem; max-width: 360px; margin: 0 auto; line-height: 1.6; }
+
+/* ── Buttons ── */
+.btn { border: none; border-radius: var(--r); cursor: pointer; font-size: 0.875rem; font-weight: 600; font-family: inherit; padding: 0.65rem 1.2rem; transition: all var(--ease); }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--amber); color: #0d0d0d; }
+.btn-primary:hover { background: var(--amber-hover); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-secondary { background: var(--bg-elevated); color: var(--text-muted); border: 1px solid var(--border); font-weight: 500; }
+.btn-secondary:hover { background: var(--bg-hover); color: var(--text); }
+.btn-ghost { background: none; color: var(--text-muted); border: 1px solid var(--border); font-weight: 500; padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+.btn-ghost:hover { color: var(--text); border-color: var(--border-focus); }
+.btn-lg { padding: 0.8rem 1.65rem; font-size: 0.95rem; border-radius: var(--r-lg); }
+
+/* ── Recommendations ── */
+.recs-bar { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.recs-hint { font-size: 0.85rem; color: var(--text-muted); }
+
+.rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
+.rec-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-xl);
+  padding: 1.6rem; position: relative; overflow: hidden;
+}
+.rec-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--amber), transparent 70%);
+}
+.rec-num { font-size: 0.68rem; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.55rem; }
+.rec-title { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+.rec-meta { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.rec-reason { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; border-top: 1px solid var(--border); padding-top: 1rem; }
+.imdb-badge { display: inline-block; background: #f5c518; color: #000; font-size: 0.72rem; font-weight: 700; border-radius: 3px; padding: 0.1rem 0.4rem; letter-spacing: 0.01em; }
+
+/* ── Mood ── */
+.mood-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 1.85rem; margin-bottom: 2rem; }
+.mood-row { display: flex; gap: 0.75rem; align-items: center; }
+.mood-input { flex: 1; font-size: 1rem; padding: 0.8rem 1rem; border-radius: var(--r-lg); background: var(--bg-input); border: 1px solid var(--border); color: var(--text); outline: none; font-family: inherit; transition: border-color var(--ease); }
+.mood-input:focus { border-color: var(--amber); }
+.mood-input::placeholder { color: var(--text-dim); }
+.mood-examples { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 1rem; align-items: center; }
+.mood-label { font-size: 0.77rem; color: var(--text-muted); margin-right: 0.15rem; }
+.mood-pill { background: none; border: 1px dashed var(--border-focus); color: var(--text-muted); border-radius: 100px; padding: 0.28rem 0.75rem; font-size: 0.78rem; cursor: pointer; transition: all var(--ease); font-family: inherit; }
+.mood-pill:hover { border-color: var(--amber); color: var(--amber); border-style: solid; }
+
+/* ── Loading / Error ── */
+.loading { display: flex; align-items: center; justify-content: center; gap: 0.75rem; padding: 3.5rem; color: var(--text-muted); font-size: 0.9rem; }
+.spinner { width: 22px; height: 22px; border: 2px solid var(--border); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.65s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-box { background: var(--danger-dim); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--r-lg); padding: 1.2rem 1.5rem; color: #f87171; font-size: 0.875rem; line-height: 1.6; }
+
+/* ── Modals ── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 2rem; width: 100%; max-width: 440px; }
+.modal h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.45rem; }
+.modal-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.4rem; line-height: 1.6; }
+.modal-actions { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 1rem; }
+
+/* ── Toast ── */
+.toasts { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 2000; display: flex; flex-direction: column; gap: 0.45rem; }
+.toast { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--r); padding: 0.7rem 1rem; font-size: 0.875rem; animation: slideIn 0.18s ease; max-width: 300px; }
+.toast.ok { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); color: #4ade80; }
+.toast.err { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.08); color: #f87171; }
+@keyframes slideIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-focus); border-radius: 3px; }
+
+@media (max-width: 640px) {
+  header { padding: 0 1rem; }
+  main { padding: 1.5rem 1rem; }
+  .rec-grid { grid-template-columns: 1fr; }
+  .mood-row { flex-direction: column; align-items: stretch; }
+  nav .nav-btn { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- API Key Modal -->
+<div class="overlay" id="keyModal" style="display:none">
+  <div class="modal">
+    <h2>Welcome to My Film Shelf</h2>
+    <p class="modal-desc">Enter your Claude API key to enable AI-powered recommendations. Stored only in your browser, sent only to the Anthropic API.</p>
+    <div style="margin-bottom:1.25rem">
+      <label style="font-size:0.8rem;font-weight:500;color:var(--text-muted);display:block;margin-bottom:0.4rem">Claude API Key</label>
+      <input type="text" id="keyInput" placeholder="sk-ant-..." autocomplete="off" spellcheck="false" style="width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:0.9rem;padding:0.65rem 0.85rem;outline:none;font-family:inherit">
+    </div>
+    <div class="modal-actions" style="margin-top:0">
+      <button class="btn btn-secondary" id="skipKey">Skip for now</button>
+      <button class="btn btn-primary" id="saveKey">Save Key</button>
+    </div>
+  </div>
+</div>
+
+<!-- Import Modal -->
+<div class="overlay" id="importModal" style="display:none">
+  <div class="modal" style="max-width:560px">
+    <h2>Import Movies</h2>
+    <p class="modal-desc">Paste movie titles separated by commas.</p>
+    <textarea id="importText" style="width:100%;min-height:120px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:0.9rem;padding:0.75rem;outline:none;font-family:inherit;resize:vertical;line-height:1.6" placeholder="A Separation, Joji, No Country for Old Men, In Bruges, Memento, There Will Be Blood"></textarea>
+    <div id="importError" style="display:none;margin-top:0.75rem"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="importCancel">Cancel</button>
+      <button class="btn btn-primary" id="importConfirm">Import</button>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="logo"><span class="logo-mark">◈</span>My Film <span>Shelf</span></div>
+    <nav>
+      <button class="nav-btn active" data-tab="library">Library</button>
+      <button class="nav-btn" data-tab="recommendations">Recommendations</button>
+      <button class="nav-btn" data-tab="mood">Discover</button>
+    </nav>
+    <button class="key-btn" id="changeKey">API Key</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Library -->
+  <div class="tab-panel active" id="tab-library">
+    <div class="section-header">
+      <h2>My Library</h2>
+      <p>Films I love.</p>
+    </div>
+
+    <div class="add-row">
+      <input type="text" id="filmTitle" placeholder="Add a film title…">
+      <button class="btn btn-primary" id="addFilm">Add</button>
+    </div>
+
+    <div class="lib-header">
+      <div class="lib-count" id="libCount"></div>
+      <button class="btn btn-ghost" id="importBtn">↑ Import</button>
+    </div>
+
+    <div class="film-list" id="filmList"></div>
+  </div>
+
+  <!-- Recommendations -->
+  <div class="tab-panel" id="tab-recommendations">
+    <div class="section-header">
+      <h2>Get Recommendations</h2>
+      <p>Claude analyzes patterns in your taste and finds films that fit.</p>
+    </div>
+    <div class="recs-bar">
+      <button class="btn btn-primary btn-lg" id="getRecsBtn">Recommend 5 Films →</button>
+      <span class="recs-hint" id="recsHint"></span>
+    </div>
+    <div id="recsOut"></div>
+  </div>
+
+  <!-- Discover -->
+  <div class="tab-panel" id="tab-mood">
+    <div class="section-header">
+      <h2>Discover by Mood</h2>
+      <p>Describe what you're in the mood for. Claude personalizes suggestions to your taste.</p>
+    </div>
+    <div class="mood-box">
+      <div class="mood-row">
+        <input type="text" class="mood-input" id="moodInput" placeholder="e.g. something like Farhadi but Korean…">
+        <button class="btn btn-primary" id="moodBtn" style="white-space:nowrap;padding:0.75rem 1.2rem;">Find Films →</button>
+      </div>
+      <div class="mood-examples">
+        <span class="mood-label">Try:</span>
+        <button class="mood-pill">something like Farhadi but Korean</button>
+        <button class="mood-pill">dark comedy about family dysfunction</button>
+        <button class="mood-pill">gritty crime from South America</button>
+        <button class="mood-pill">meditative and visually poetic</button>
+        <button class="mood-pill">morally ambiguous protagonist</button>
+      </div>
+    </div>
+    <div id="moodOut"></div>
+  </div>
+
+</main>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+// ── State ──
+const LIB_KEY = 'filmshelf_lib';
+const KEY_KEY = 'filmshelf_apikey';
+
+let library = JSON.parse(localStorage.getItem(LIB_KEY) || '[]');
+let apiKey  = localStorage.getItem(KEY_KEY) || '';
+
+// ── Utilities ──
+const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
+const esc  = s => { const d = document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; };
+const save = () => localStorage.setItem(LIB_KEY, JSON.stringify(library));
+
+function toast(msg, type = '') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// ── API Key ──
+const keyModal = document.getElementById('keyModal');
+const showKeyModal = show => keyModal.style.display = show ? 'flex' : 'none';
+
+document.getElementById('saveKey').addEventListener('click', () => {
+  const v = document.getElementById('keyInput').value.trim();
+  if (!v) { toast('Please enter an API key', 'err'); return; }
+  apiKey = v;
+  localStorage.setItem(KEY_KEY, apiKey);
+  showKeyModal(false);
+  toast('API key saved', 'ok');
+  updateRecsHint();
+});
+document.getElementById('skipKey').addEventListener('click', () => showKeyModal(false));
+document.getElementById('changeKey').addEventListener('click', () => {
+  document.getElementById('keyInput').value = apiKey;
+  showKeyModal(true);
+});
+
+// ── Navigation ──
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+    if (btn.dataset.tab === 'recommendations') updateRecsHint();
+  });
+});
+
+// ── Library ──
+function renderLibrary() {
+  const list  = document.getElementById('filmList');
+  const count = document.getElementById('libCount');
+  count.innerHTML = `<strong>${library.length}</strong> film${library.length !== 1 ? 's' : ''}`;
+
+  if (!library.length) {
+    list.innerHTML = `<div class="empty">
+      <div class="empty-icon">◈</div>
+      <h3>Your shelf is empty</h3>
+      <p>Add films above or import a list.</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = library.map(f => `
+    <div class="film-row">
+      <span class="film-name">${esc(f.title)}</span>
+      <button class="del-btn" onclick="deleteFilm('${f.id}')" title="Remove">×</button>
+    </div>`).join('');
+}
+
+function addFilm(title) {
+  title = title.trim();
+  if (!title) return false;
+  if (library.some(f => f.title.toLowerCase() === title.toLowerCase())) {
+    toast(`"${title}" is already in your library`, 'err');
+    return false;
+  }
+  library.unshift({ id: uid(), title, added: Date.now() });
+  save();
+  renderLibrary();
+  return true;
+}
+
+function deleteFilm(id) {
+  library = library.filter(f => f.id !== id);
+  save(); renderLibrary();
+  toast('Film removed');
+}
+
+document.getElementById('addFilm').addEventListener('click', () => {
+  const input = document.getElementById('filmTitle');
+  if (addFilm(input.value)) { input.value = ''; input.focus(); }
+});
+
+document.getElementById('filmTitle').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const input = e.target;
+    if (addFilm(input.value)) input.value = '';
+  }
+});
+
+// ── Import ──
+document.getElementById('importBtn').addEventListener('click', () => {
+  document.getElementById('importText').value = '';
+  document.getElementById('importError').style.display = 'none';
+  document.getElementById('importModal').style.display = 'flex';
+  document.getElementById('importText').focus();
+});
+document.getElementById('importCancel').addEventListener('click', () => {
+  document.getElementById('importModal').style.display = 'none';
+});
+document.getElementById('importConfirm').addEventListener('click', () => {
+  const raw = document.getElementById('importText').value;
+  const titles = raw.split(',').map(t => t.trim()).filter(Boolean);
+
+  if (!titles.length) {
+    const err = document.getElementById('importError');
+    err.className = 'error-box'; err.textContent = 'Paste at least one title.'; err.style.display = '';
+    return;
+  }
+
+  let imported = 0, skipped = 0;
+  titles.forEach(title => {
+    if (library.some(f => f.title.toLowerCase() === title.toLowerCase())) { skipped++; return; }
+    library.unshift({ id: uid(), title, added: Date.now() });
+    imported++;
+  });
+
+  save(); renderLibrary();
+  document.getElementById('importModal').style.display = 'none';
+  const msg = skipped
+    ? `Imported ${imported} film${imported !== 1 ? 's' : ''}. Skipped ${skipped} duplicate${skipped !== 1 ? 's' : ''}.`
+    : `Imported ${imported} film${imported !== 1 ? 's' : ''}.`;
+  toast(msg, 'ok');
+});
+
+// ── Claude API ──
+async function callClaude(system, user) {
+  if (!apiKey) {
+    document.getElementById('keyInput').value = '';
+    showKeyModal(true);
+    throw new Error('No API key set. Please enter your Claude API key.');
+  }
+
+  let res;
+  try {
+    res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 2048,
+        system,
+        messages: [{ role: 'user', content: user }]
+      })
+    });
+  } catch (networkErr) {
+    throw new Error(`Network error — ${networkErr.message}`);
+  }
+
+  if (!res.ok) {
+    const raw = await res.text().catch(() => '');
+    let msg = `HTTP ${res.status}`;
+    try { const j = JSON.parse(raw); msg = j.error?.message || j.message || raw || msg; } catch { msg = raw || msg; }
+    throw new Error(msg);
+  }
+
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+function libTitles() {
+  return library.map(f => `- ${f.title}`).join('\n');
+}
+
+function parseJson(text) {
+  const m = text.match(/\[[\s\S]*\]/);
+  if (m) { try { return JSON.parse(m[0]); } catch {} }
+  return null;
+}
+
+function loading(el) {
+  el.innerHTML = `<div class="loading"><div class="spinner"></div><span>Claude is thinking…</span></div>`;
+}
+
+function renderCards(recs, el) {
+  el.innerHTML = `<div class="rec-grid">${recs.map((r, i) => `
+    <div class="rec-card">
+      <div class="rec-num">Pick ${i + 1}</div>
+      <div class="rec-title">${esc(r.title || 'Unknown')}</div>
+      <div class="rec-meta">
+        ${[r.year, r.director].filter(Boolean).map(esc).join(' · ')}
+        ${r.imdb_rating ? `<span class="imdb-badge">IMDb ${esc(String(r.imdb_rating))}</span>` : ''}
+      </div>
+      <div class="rec-reason">${esc(r.reason || '')}</div>
+    </div>`).join('')
+  }</div>`;
+}
+
+const SYSTEM_PROMPT = `You are a film recommendation expert with deep knowledge of world cinema.
+
+Here is a list of films this person loves. Analyze the patterns in their taste — the genres, regions, directors, themes, tones, and sensibilities that connect these choices. Then recommend 5 films they probably haven't seen. For each recommendation, explain specifically what pattern in their list it connects to. Avoid mainstream blockbusters.
+
+Return ONLY a JSON array of exactly 5 objects:
+[{ "title": "...", "year": "...", "director": "...", "imdb_rating": 8.2, "reason": "..." }]
+
+Return ONLY the raw JSON array, no other text.`;
+
+// ── Recommendations ──
+function updateRecsHint() {
+  const hint = document.getElementById('recsHint');
+  hint.textContent = library.length
+    ? `Based on your ${library.length} film${library.length !== 1 ? 's' : ''}.`
+    : 'Add films to your library first.';
+}
+
+document.getElementById('getRecsBtn').addEventListener('click', async () => {
+  if (!library.length) { toast('Add some films to your library first', 'err'); return; }
+
+  const out = document.getElementById('recsOut');
+  const btn = document.getElementById('getRecsBtn');
+  btn.disabled = true;
+  loading(out);
+
+  const msg = `Here is my list of films:\n\n${libTitles()}\n\nRecommend 5 films I probably haven't seen.`;
+
+  try {
+    const text = await callClaude(SYSTEM_PROMPT, msg);
+    const recs = parseJson(text);
+    if (recs?.length) renderCards(recs, out);
+    else out.innerHTML = `<div class="error-box">Couldn't parse the response.<br><br><pre style="white-space:pre-wrap;font-size:0.8rem;margin-top:0.5rem">${esc(text)}</pre></div>`;
+  } catch (err) {
+    out.innerHTML = `<div class="error-box">${esc(err.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ── Discover by Mood ──
+async function discoverMood() {
+  const query = document.getElementById('moodInput').value.trim();
+  if (!query) { toast("Describe what you're in the mood for", 'err'); return; }
+
+  const out = document.getElementById('moodOut');
+  const btn = document.getElementById('moodBtn');
+  btn.disabled = true;
+  loading(out);
+
+  const hasLib = library.length > 0;
+  const userMsg = hasLib
+    ? `My mood/request: "${query}"\n\nMy film library for context:\n${libTitles()}\n\nRecommend 5 films matching my mood and taste.`
+    : `My mood/request: "${query}"\n\nRecommend 5 films that match this mood.`;
+
+  try {
+    const text = await callClaude(SYSTEM_PROMPT, userMsg);
+    const recs = parseJson(text);
+    if (recs?.length) renderCards(recs, out);
+    else out.innerHTML = `<div class="error-box">Couldn't parse the response.<br><br><pre style="white-space:pre-wrap;font-size:0.8rem;margin-top:0.5rem">${esc(text)}</pre></div>`;
+  } catch (err) {
+    out.innerHTML = `<div class="error-box">${esc(err.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('moodBtn').addEventListener('click', discoverMood);
+document.getElementById('moodInput').addEventListener('keydown', e => { if (e.key === 'Enter') discoverMood(); });
+document.querySelectorAll('.mood-pill').forEach(p => {
+  p.addEventListener('click', () => {
+    document.getElementById('moodInput').value = p.textContent;
+    document.getElementById('moodInput').focus();
+  });
+});
+
+// ── Init ──
+// Migrate old library entries (drop rating/note/tags if present)
+library = library.map(f => ({ id: f.id || uid(), title: f.title, added: f.added || Date.now() }));
+save();
+
+renderLibrary();
+updateRecsHint();
+</script>
+</body>
+</html>
