@@ -438,11 +438,37 @@ function renderLibrary() {
   countEl.innerHTML = `<strong>${library.length}</strong> film${library.length !== 1 ? 's' : ''}`;
 
   if (!library.length) {
-    listEl.innerHTML = `<div class="empty">
-      <div class="empty-icon">◈</div>
-      <h3>Your shelf is empty</h3>
-      <p>Add films above or import a comma-separated list.</p>
-    </div>`;
+    const legacy = JSON.parse(localStorage.getItem('filmshelf_lib') || '[]');
+    const migratable = legacy.filter(f => f.title);
+    listEl.innerHTML = migratable.length
+      ? `<div class="notice">
+          <strong>Found ${migratable.length} film${migratable.length !== 1 ? 's' : ''} from your previous local library.</strong><br>
+          <span style="color:var(--text-muted)">Click below to import them into Supabase.</span><br><br>
+          <button class="btn btn-primary" id="migrateBtn">Import ${migratable.length} film${migratable.length !== 1 ? 's' : ''} from local storage →</button>
+        </div>`
+      : `<div class="empty">
+          <div class="empty-icon">◈</div>
+          <h3>Your shelf is empty</h3>
+          <p>Add films above or import a comma-separated list.</p>
+        </div>`;
+
+    if (migratable.length) {
+      document.getElementById('migrateBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('migrateBtn');
+        btn.disabled = true; btn.textContent = 'Importing…';
+        try {
+          const rows = await sbInsert(migratable.map(f => ({ title: f.title })));
+          rows.forEach(r => library.unshift({ id: r.id, title: r.title, added: r.added_at }));
+          localStorage.removeItem('filmshelf_lib');
+          renderLibrary();
+          updateRecsHint();
+          toast(`Imported ${rows.length} film${rows.length !== 1 ? 's' : ''} to Supabase`, 'ok');
+        } catch (err) {
+          btn.disabled = false; btn.textContent = 'Retry';
+          toast('Migration failed: ' + err.message, 'err');
+        }
+      });
+    }
     return;
   }
 
